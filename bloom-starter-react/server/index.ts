@@ -5,13 +5,22 @@ import compress from "compression";
 import session from "express-session";
 import uuid from "uuid";
 import path from "path";
-import http from "http";
+import https from "https";
 import morgan from "morgan";
 import { validateResponseData } from "@bloomprotocol/share-kit";
 
 import { loggedInSession } from "./middleware";
 import { applySocket, sendSocketMessage } from "./socket";
 import { env } from "./environment";
+
+const fs = require('fs');
+
+const options = {
+  key: fs.readFileSync('/home/mvp/tls/key.pem'),
+  cert: fs.readFileSync('/home/mvp/tls/cert.pem'),
+
+  passphrase: 'paraphrase of pem'
+  };
 
 /**
  * WARNING: This "database" is NOT intended to be used in production applications.
@@ -145,10 +154,11 @@ app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "client", "index.html"));
 });
 
-const server = http.createServer(app);
+// const server = http.createServer(app);
+const server = https.createServer(options,app);
 
 applySocket(server, sessionParser);
 
 server.listen(env.port, () =>
-  console.log(`Listening on http://localhost:${env.port}`)
+  console.log(`Listening on https://localhost:${env.port}`)
 );

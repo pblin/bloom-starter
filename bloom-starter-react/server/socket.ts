@@ -1,5 +1,6 @@
 import express from "express";
-import http from "http";
+// import http from "http";
+import https from "https";
 import WebSocket from "ws";
 
 type WebSocketMap = {
@@ -27,7 +28,7 @@ export const sendSocketMessage = (message: {
 };
 
 export const applySocket = (
-  server: http.Server,
+  server: https.Server,
   sessionParser: express.RequestHandler
 ) => {
   const wss = new WebSocket.Server({
