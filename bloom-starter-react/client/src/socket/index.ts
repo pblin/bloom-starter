@@ -9,7 +9,7 @@ let socket: WebSocket;
 const host =
   window.location.hostname === "localhost"
     ? `ws://${window.location.hostname}:8080`
-    : `wss://${window.location.hostname}`;
+    : `wss://${window.location.hostname}:8080`;
 
 let socketHandlers: SocketHandlers = {};
 
